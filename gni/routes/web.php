@@ -23,5 +23,5 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/users/import', 'UsersImportController@show');
-Route::post('/users/import', 'UsersImportController@store');
+Route::get('/users/import', 'App\Http\Controllers\UsersImportController@show');
+Route::post('/users/import', 'App\Http\Controllers\UsersImportController@store');
