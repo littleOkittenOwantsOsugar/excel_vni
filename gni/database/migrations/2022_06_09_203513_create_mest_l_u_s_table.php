@@ -14,10 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('mest_l_u_s', function (Blueprint $table) {
-            $table->id('id_deposit');
+            $table->integer('id_deposit');
             $table->foreign('id_deposit')->references('id_deposit')->on('mineral_deposits');
-            $table->id('id_license_area');
+            $table->integer('id_license_area');
             $table->foreign('id_license_area')->references('id_license_area')->on('license_areas');
+            $table->primary(['id_deposit', 'id_license_area']);
             $table->timestamps();
         });
     }

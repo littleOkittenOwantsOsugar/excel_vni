@@ -14,10 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('mineral_deposit_twos', function (Blueprint $table) {
-            $table->id('id_deposit');
+            $table->integer('id_deposit');
             $table->foreign('id_deposit')->references('id_deposit')->on('mineral_deposits');
-            $table->id('id_subject');
+            $table->integer('id_subject');
             $table->foreign('id_subject')->references('id_subject')->on('subject_russias');
+            $table->primary(['id_deposit', 'id_subject']);
             $table->timestamps();
         });
     }

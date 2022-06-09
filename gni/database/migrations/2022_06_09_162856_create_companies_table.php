@@ -22,7 +22,8 @@ return new class extends Migration
             $table->integer('CodeOKATO');
             $table->integer('OGRN');
             $table->text('Addition');
-            $table->id('ManagementCompany')->references('id_company')->on('companies')->onDelete('cascade');
+            $table->integer('ManagementCompany');
+            $table->foreign('ManagementCompany')->references('id_company')->on('companies')->onDelete('cascade');
             $table->text('CurrentState');
             $table->timestamps();
         });
