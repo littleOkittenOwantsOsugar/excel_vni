@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class FederalDistrict extends Model
 {
     use HasFactory;
+
+    protected $fillable=[
+        'id_district',
+        'NameDistrict'
+    ];
 }

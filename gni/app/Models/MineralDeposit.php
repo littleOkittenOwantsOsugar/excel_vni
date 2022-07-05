@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class MineralDeposit extends Model
 {
     use HasFactory;
+
+    protected $fillable=[
+        'id_deposit',
+        'id_osvoenie',
+        'DepostName',
+        'Coordinates'
+    ];
 }

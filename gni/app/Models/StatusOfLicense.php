@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class StatusOfLicense extends Model
 {
     use HasFactory;
+
+    protected $fillable=[
+        'id_status',
+        'NameStatus'
+    ];
 }
