@@ -20,7 +20,7 @@ class FifthSheetImport implements ToCollection, WithHeadingRow
         $this -> federal_temp = FederalDistrict::select('id_district', 'NameDistrict')->get();//??
     }
 
-    public function collection(Collection $rows)
+    public function collection(Collection $rows) //unproofed done
     {
         foreach ($rows as $row) 
             {

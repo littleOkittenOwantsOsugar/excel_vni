@@ -22,35 +22,26 @@ class FirstSheetImport implements ToCollection, WithHeadingRow
 
     public function collection(Collection $rows)
     {
-        foreach ($rows as $row) 
+        foreach ($rows as $row){
+            Company::create([
+                'NameCompany' => $row[0],
+                'Address'  => $row[1],
+                'INN'  => $row[2],
+                'CodeOKPO'  => $row[3],
+                'CodeOKATO'  => $row[4],
+                'OGRN'  => $row[7],
+                'Addition'  => $row[8],
+                'CurrentState'  => $row[9]
+            ]);
+        }
+
+        foreach ($rows as $row) //in progress
             {
                 $company_temp = $this->company_temp->where('NameCompany', $row[10])->first();
 
                 if ($row[10]='Самостоятельные' || $row[10]=null){
-                    Company::create([
-                        'NameCompany' => $row[0],
-                        'Address'  => $row[1],
-                        'INN'  => $row[2],
-                        'CodeOKPO'  => $row[3],
-                        'CodeOKATO'  => $row[4],
-                        'OGRN'  => $row[7],
-                        'Addition'  => $row[8],
+                    Company::updateorcreate([
                         'ManagementCompany' => $company_temp -> id_company, //different foreach
-                        'CurrentState'  => $row[9]
-                    ]);
-                }
-
-                elseif ($row[10]!='Самостоятельные' || $row[10]!=null){
-                    Company::create([
-                        'NameCompany' => $row[0],
-                        'Address'  => $row[1],
-                        'INN'  => $row[2],
-                        'CodeOKPO'  => $row[3],
-                        'CodeOKATO'  => $row[4],
-                        'OGRN'  => $row[7],
-                        'Addition'  => $row[8],
-                        //'ManagementCompany', //different foreach
-                        'CurrentState'  => $row[9]
                     ]);
                 }
             }

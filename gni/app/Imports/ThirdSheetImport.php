@@ -68,7 +68,7 @@ class ThirdSheetImport implements ToCollection, WithHeadingRow
                     'SpecialPurpose' => $row[6]
                 ]);
             }
-        foreach ($rows as $row) {
+        foreach ($rows as $row) {//in progress
             //СЫК01069НП
             $tmp_row=array($row[5]);//3+5+2
             //(С, Ы, К, 0, 1, 0, 6, 9, Н, П)

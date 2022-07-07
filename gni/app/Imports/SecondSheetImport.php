@@ -15,10 +15,10 @@ class SecondSheetImport implements ToCollection, WithHeadingRow
     */
     
 
-    public function collection(Collection $rows)
+    public function collection(Collection $rows) //unproofed done
     {
         
-        foreach ($rows as $row) 
+        foreach ($rows as $row)
             {
                 $LAtemp=explode(" (", $row[4] );//Восточно - Ачисинский (Улашкент) (МАХ00704НР)
                 //Восточно - Ачисинский, Улашкент), МАХ00704НР)
@@ -36,7 +36,7 @@ class SecondSheetImport implements ToCollection, WithHeadingRow
                     //Восточно - Ачисинский (Улашкент)
                 };
 
-                LicenseArea::create([
+                LicenseArea::create([//????
                     'NameLicenseArea' => $LAtemp//the last() 
                 ]);
             }
