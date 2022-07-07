@@ -9,8 +9,9 @@ class LicenseArea extends Model
 {
     use HasFactory;
 
+    protected $primaryKey='id_license_area';
+
     protected $fillable=[
-        'id_license_area',
         'NameLicenseArea',
         'Geometry'
     ];

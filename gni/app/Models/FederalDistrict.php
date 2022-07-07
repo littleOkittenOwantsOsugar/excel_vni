@@ -9,8 +9,9 @@ class FederalDistrict extends Model
 {
     use HasFactory;
 
+    protected $primaryKey='id_district';
+
     protected $fillable=[
-        'id_district',
         'NameDistrict'
     ];
 }

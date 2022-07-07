@@ -9,8 +9,9 @@ class MineralDeposit extends Model
 {
     use HasFactory;
 
+    protected $primaryKey='id_deposit';
+
     protected $fillable=[
-        'id_deposit',
         'id_osvoenie',
         'DepostName',
         'Coordinates'

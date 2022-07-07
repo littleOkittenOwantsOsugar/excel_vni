@@ -9,6 +9,8 @@ class License extends Model
 {
     use HasFactory;
 
+    protected $primaryKey='id_license';
+
     protected $fillable=[
         'id_company',
         'id_license_area',

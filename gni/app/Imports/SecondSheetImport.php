@@ -20,24 +20,24 @@ class SecondSheetImport implements ToCollection, WithHeadingRow
         
         foreach ($rows as $row) 
             {
-                $LAtemp=explode(" (", $row[3] );//Таволожская (Блок А) (СРТ01113НР)
-                //Таволожская, Блок А), СРТ01113НР)
+                $LAtemp=explode(" (", $row[4] );//Восточно - Ачисинский (Улашкент) (МАХ00704НР)
+                //Восточно - Ачисинский, Улашкент), МАХ00704НР)
         
                 StatusOfLicense::firstorcreate([
                     'NameStatus' => $row[0]
                 ]);
                 
-                if (array_key_exists(2, $LAtemp)){
+                if (array_key_exists(1, $LAtemp)){
                     $LAtemp=(string)$LAtemp;
                     $LAtemp=substr($LAtemp, 0, -1);
+                    //Восточно - Ачисинский, Улашкент)
                     $LAtemp=(object)$LAtemp;
-                    $LAtemp->implode(" (", );
+                    $LAtemp->implode(' (', $LAtemp);//??? implode(separator,array) 
+                    //Восточно - Ачисинский (Улашкент)
                 };
-                    //$LAtemp->implode(" (", )
-                
 
                 LicenseArea::create([
-                    'NameLicenseArea' //the last() 
+                    'NameLicenseArea' => $LAtemp//the last() 
                 ]);
             }
     }

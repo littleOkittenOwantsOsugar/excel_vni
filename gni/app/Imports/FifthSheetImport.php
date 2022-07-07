@@ -17,14 +17,14 @@ class FifthSheetImport implements ToCollection, WithHeadingRow
 
     public function __construct()
     {
-        $this -> federal_temp = FederalDistrict::select('id_district', 'NameDistrict')->get();
+        $this -> federal_temp = FederalDistrict::select('id_district', 'NameDistrict')->get();//??
     }
 
     public function collection(Collection $rows)
     {
         foreach ($rows as $row) 
             {
-                $federal_temp = $this->federal_temp->where('NameDistrict', $row[2])->first();
+                $federal_temp = $this->federal_temp->where('NameDistrict', $row[2])->first();//??
                 
                 FederalDistrict::firstorcreate([
                     'NameDistrict' => $row[2]
@@ -32,7 +32,7 @@ class FifthSheetImport implements ToCollection, WithHeadingRow
                 SubjectRussia::create([
                     'Name' => $row[0],
                     'ShortName' => $row[1],
-                    'id_district' => $federal_temp -> id_district
+                    'id_district' => $federal_temp -> id_district//??
                 ]);
             }
     }

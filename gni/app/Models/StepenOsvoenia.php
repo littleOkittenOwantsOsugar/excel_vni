@@ -9,8 +9,9 @@ class StepenOsvoenia extends Model
 {
     use HasFactory;
 
+    protected $primaryKey='id_osvoenie';
+
     protected $fillable=[
-        'id_osvoenie',
         'NameStepen'
     ];
 }

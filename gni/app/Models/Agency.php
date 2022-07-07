@@ -9,8 +9,9 @@ class Agency extends Model
 {
     use HasFactory;
 
+    protected $primaryKey='id_agency';
+
     protected $fillable=[
-        'id_agency',
         'NameAgency'
     ];
 }

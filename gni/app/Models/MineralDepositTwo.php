@@ -9,7 +9,7 @@ class MineralDepositTwo extends Model
 {
     use HasFactory;
 
-    protected $fillable=[
+    protected $primaryKey=[
         'id_deposit',
         'id_subject'
     ];

@@ -29,6 +29,15 @@ class FourthSheetImport implements ToCollection, WithHeadingRow
     {
         foreach ($rows as $row) 
             {
+                $MDtemp=explode(" (", $row[3] );
+
+                if (array_key_exists(1, $MDtemp)){
+                    $MDtemp=(string)$MDtemp;
+                    $MDtemp=substr($MDtemp, 0, -1);
+                    $MDtemp=(object)$MDtemp;
+                    $MDtemp->implode(' (', $MDtemp);//??? implode(separator,array)
+                };
+
                 StepenOsvoenia::firstorcreate([//unique
                     'NameStepen'=> $row[2]
                 ]);
@@ -38,7 +47,7 @@ class FourthSheetImport implements ToCollection, WithHeadingRow
                 {
                     MineralDeposit::create([
                         'id_osvoenie' => $osvoenie_temp -> id_osvoenie,
-                        'DepostName',//3
+                        'DepostName' => $MDtemp,
                         'Coordinates' => $row[6]
                     ]);
                 }

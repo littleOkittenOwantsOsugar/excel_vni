@@ -9,8 +9,9 @@ class SubjectRussia extends Model
 {
     use HasFactory;
 
+    protected $primaryKey='id_subject';
+
     protected $fillable=[
-        'id_subject',
         'Name',
         'ShortName',
         'id_district'

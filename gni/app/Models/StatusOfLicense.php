@@ -9,8 +9,9 @@ class StatusOfLicense extends Model
 {
     use HasFactory;
 
+    protected $primaryKey='id_status';
+
     protected $fillable=[
-        'id_status',
         'NameStatus'
     ];
 }
