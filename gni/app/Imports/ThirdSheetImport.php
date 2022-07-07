@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\License;
 use App\Models\LicenseArea;
 use App\Models\SpecialPurpose;
+use App\Models\StatusOfLicense;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -17,17 +18,46 @@ class ThirdSheetImport implements ToCollection, WithHeadingRow
     * @param Collection $collection
     */
 
+    private $company_temp;
+    private $la_temp;
+    private $agency_temp;
+    private $status_temp;
+
+    public function __construct()
+    {
+        $this -> company_temp = Company::select('id_company', 'NameCompany')->get();//??
+        $this -> la_temp = LicenseArea::select('id_license_area', 'NameLicenseArea')->get();
+        $this -> agency_temp = Agency::select('id_agency', 'NameAgency')->get();
+        $this -> status_temp = StatusOfLicense::select('id_status', 'NameStatus')->get();
+    }
+
     public function collection(Collection $rows)
     {
         foreach ($rows as $row) 
             {
+                if ($row[13] != null){
+                    Agency::firstorcreate([//THIS SHOULD BE BEFORE LICENSE
+                        'NameAgency' => $row[13]
+                    ]);
+                }
+
+                LicenseArea::create([
+                    'Geometry' => $row[14]
+                ]);
+            }
+        foreach ($rows as $row) 
+            {
                 //first without PreviousLicense then lookup for license in another foreach update
+                $company_temp = $this->company_temp->where('NameCompany', $row[0])->first();
+                $la_temp = $this->la_temp->where('NameLicenseArea', $row[1])->first();
+                $agency_temp = $this->agency_temp->where('NameAgency', $row[13])->first();
+                $status_temp = $this->status_temp->where('NameStatus', $row[8])->first();
 
                 License::create([
-                    'id_company',
-                    'id_license_area',
-                    'id_agency',
-                    'id_status',
+                    'id_company' => $company_temp -> id_company,// if nullable ?? NULL
+                    'id_license_area' => $la_temp -> id_license_area,
+                    'id_agency' => $agency_temp -> id_agency,
+                    'id_status' => $status_temp -> id_status,
                     'TypeOfPrimaryMineral' => $row[7],
                     'DateOfRegistration' => $row[10],
                     'DateOfEnding' => $row[11],
@@ -36,14 +66,6 @@ class ThirdSheetImport implements ToCollection, WithHeadingRow
                     'Number' => $row[3],
                     'Type' => $row[4],
                     'SpecialPurpose' => $row[6]
-                ]);
-                if ($row[13] != null){
-                    Agency::firstorcreate([
-                        'NameAgency' => $row[13]
-                    ]);
-                }
-                LicenseArea::create([
-                    'Geometry' => $row[14]
                 ]);
             }
         foreach ($rows as $row) {
