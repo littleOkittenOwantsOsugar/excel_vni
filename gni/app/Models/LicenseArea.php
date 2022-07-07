@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class LicenseArea extends Model
 {
     use HasFactory;
+
+    protected $primaryKey='id_license_area';
+
+    protected $fillable=[
+        'NameLicenseArea',
+        'Geometry'
+    ];
 }

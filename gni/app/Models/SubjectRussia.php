@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class SubjectRussia extends Model
 {
     use HasFactory;
+
+    protected $primaryKey='id_subject';
+
+    protected $fillable=[
+        'Name',
+        'ShortName',
+        'id_district'
+    ];
 }

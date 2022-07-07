@@ -21,8 +21,6 @@ return new class extends Migration
             $table->foreign('id_license_area')->references('id_license_area')->on('license_areas');
             $table->integer('id_agency');
             $table->foreign('id_agency')->references('id_agency')->on('agencies');
-            $table->integer('id_special_purpose');
-            $table->foreign('id_special_purpose')->references('id_special_purpose')->on('special_purposes');
             $table->integer('id_status');
             $table->foreign('id_status')->references('id_status')->on('status_of_licenses');
             $table->integer('PreviousLicense');
@@ -34,6 +32,7 @@ return new class extends Migration
             $table->string('Seria');
             $table->integer('Number');
             $table->string('Type');
+            $table->text('SpecialPurpose');
             $table->timestamps();
         });
     }

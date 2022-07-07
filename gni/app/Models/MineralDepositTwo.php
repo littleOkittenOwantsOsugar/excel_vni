@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class MineralDepositTwo extends Model
 {
     use HasFactory;
+
+    protected $primaryKey=[
+        'id_deposit',
+        'id_subject'
+    ];
 }

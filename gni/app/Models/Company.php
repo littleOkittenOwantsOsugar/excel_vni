@@ -8,4 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Company extends Model
 {
     use HasFactory;
+
+    protected $primaryKey='id_company';
+
+    protected $fillable=[
+        'NameCompany',
+        'Address',
+        'INN',
+        'CodeOKPO',
+        'CodeOKATO',
+        'OGRN',
+        'Addition',
+        'ManagementCompany',
+        'CurrentState'
+    ];
 }
