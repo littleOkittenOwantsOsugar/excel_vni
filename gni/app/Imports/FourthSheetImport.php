@@ -20,43 +20,50 @@ class FourthSheetImport implements ToCollection, WithHeadingRow
     */
     private $osvoenie_temp;
 
+    private $mdt_temp;
+    private $mlu_temp;
+    
+
     public function __construct()
     {
         $this -> osvoenie_temp = StepenOsvoenia::select('id_osvoenie', 'NameStepen')->get();
+
+        //not right
+        //$this -> mdt_temp = StepenOsvoenia::select('id_subject', '')->get();
+        //$this -> mlu_temp = StepenOsvoenia::select('id_license_area', '')->get();
     }
 
     public function collection(Collection $rows)
     {
         foreach ($rows as $row) 
             {
-                $MDtemp=explode(" (", $row[3] );
+                //dd($row);
+                $MDtemp=explode(" (", $row["mestorozdenie_deistvuiushhie_licenzii"] );
 
-                if (array_key_exists(1, $MDtemp)){
-                    $MDtemp=(string)$MDtemp;
-                    $MDtemp=substr($MDtemp, 0, -1);
-                    $MDtemp=(object)$MDtemp;
-                    $MDtemp->implode(' (', $MDtemp);//??? implode(separator,array)
+                if (array_key_exists(1, $MDtemp)){//see secondimport
+                    array_pop($MDtemp);
+                    $MDtemp=implode(' (', $MDtemp);
                 };
 
                 StepenOsvoenia::firstorcreate([//unique
-                    'NameStepen'=> $row[2]
+                    'NameStepen'=> $row["stepen_osvoeniia"]
                 ]);
 
-                $osvoenie_temp = $this->osvoenie_temp->where('NameStepen', $row[2])->first();
-                if($row[0]!=null)
+                $osvoenie_temp = $this->osvoenie_temp->where('NameStepen', $row["stepen_osvoeniia"])->first();
+                if($row["federalnyi_okrug"]!=null)
                 {
                     MineralDeposit::create([
                         'id_osvoenie' => $osvoenie_temp -> id_osvoenie,
                         'DepostName' => $MDtemp,
-                        'Coordinates' => $row[6]
+                        'Coordinates' => $row["geom_geometrymultipolygon"]
                     ]);
                 }
                 
-                MineralDepositTwo::create([
+                MineralDepositTwo::create([//rollback done
                     'id_deposit',
                     'id_subject'
                 ]);
-                MestLU::create([
+                MestLU::create([//rollback done
                     'id_deposit',
                     'id_license_area'
                 ]);

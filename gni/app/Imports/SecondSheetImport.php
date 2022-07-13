@@ -8,36 +8,39 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
+
 class SecondSheetImport implements ToCollection, WithHeadingRow
 {
-    /**
-    * @param Collection $collection
-    */
-    
-
     public function collection(Collection $rows) //unproofed done
-    {
-        
+    {    
         foreach ($rows as $row)
             {
-                $LAtemp=explode(" (", $row[4] );//Восточно - Ачисинский (Улашкент) (МАХ00704НР)
+
+                $LAtemp=explode(" (", $row["licenzionnyi_ucastok_licenziia"] );
+                $LAtemp1="";
+
+                //Восточно - Ачисинский (Улашкент) (МАХ00704НР)
                 //Восточно - Ачисинский, Улашкент), МАХ00704НР)
-        
+
                 StatusOfLicense::firstorcreate([
-                    'NameStatus' => $row[0]
+                    'NameStatus' => $row["sostoianie_licenzii"]
                 ]);
                 
-                if (array_key_exists(1, $LAtemp)){
-                    $LAtemp=(string)$LAtemp;
-                    $LAtemp=substr($LAtemp, 0, -1);
-                    //Восточно - Ачисинский, Улашкент)
-                    $LAtemp=(object)$LAtemp;
-                    $LAtemp->implode(' (', $LAtemp);//??? implode(separator,array) 
-                    //Восточно - Ачисинский (Улашкент)
-                };
+                array_pop($LAtemp);
+                //[Восточно - Ачисинский, Улашкент)]
 
-                LicenseArea::create([//????
-                    'NameLicenseArea' => $LAtemp//the last() 
+                if (array_key_exists(1, $LAtemp)){
+                    
+                    $LAtemp1 = implode(" (", $LAtemp);
+                }
+                else {
+                    //var_dump($LAtemp);
+                    $LAtemp1=$LAtemp[0];
+                }
+                    //[Восточно - Ачисинский (Улашкент)]
+                
+                LicenseArea::create([
+                    'NameLicenseArea' => $LAtemp1
                 ]);
             }
     }

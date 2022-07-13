@@ -17,31 +17,31 @@ class FirstSheetImport implements ToCollection, WithHeadingRow
 
     public function __construct()
     {
-        $this -> company_temp = Company::select('id_company', 'NameCompany')->get();//??
+        $this -> company_temp = Company::select('id_company', 'NameCompany')->get();
     }
 
-    public function collection(Collection $rows)
+    public function collection(Collection $rows) //in progress
     {
         foreach ($rows as $row){
             Company::create([
-                'NameCompany' => $row[0],
-                'Address'  => $row[1],
-                'INN'  => $row[2],
-                'CodeOKPO'  => $row[3],
-                'CodeOKATO'  => $row[4],
-                'OGRN'  => $row[7],
-                'Addition'  => $row[8],
-                'CurrentState'  => $row[9]
+                'NameCompany' => $row["nazvanie"],
+                'Address'  => $row["poctovyi_adres"],
+                'INN'  => $row["inn"], 
+                'CodeOKPO'  => $row["kod_okpo"], 
+                'CodeOKATO'  => $row["kod_okato"], 
+                'OGRN'  => $row["ogrn"], 
+                'Addition'  => $row["primecanie"],
+                'CurrentState'  => $row["tekushhee_sostoianie"] 
             ]);
         }
 
-        foreach ($rows as $row) //in progress
+        foreach ($rows as $row) // needs to be done
             {
-                $company_temp = $this->company_temp->where('NameCompany', $row[10])->first();
+                $company_temp = $this->company_temp->where('NameCompany', $row["upravliaiushhaia_kompaniia"])->first();
 
-                if ($row[10]='Самостоятельные' || $row[10]=null){
+                if ($row["upravliaiushhaia_kompaniia"]='Самостоятельные' || $row["upravliaiushhaia_kompaniia"]=null){
                     Company::updateorcreate([
-                        'ManagementCompany' => $company_temp -> id_company, //different foreach
+                        'ManagementCompany' => $company_temp -> id_company, 
                     ]);
                 }
             }

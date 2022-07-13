@@ -35,42 +35,43 @@ class ThirdSheetImport implements ToCollection, WithHeadingRow
     {
         foreach ($rows as $row) 
             {
+                //dd($row);
                 if ($row[13] != null){
                     Agency::firstorcreate([//THIS SHOULD BE BEFORE LICENSE
-                        'NameAgency' => $row[13]
+                        'NameAgency' => $row["organ_vydavsii_licenziiu"]
                     ]);
                 }
 
-                LicenseArea::create([
-                    'Geometry' => $row[14]
+                LicenseArea::create([// license area or license?
+                    'Geometry' => $row["geom_geometrymultipolygon"]
                 ]);
             }
         foreach ($rows as $row) 
             {
                 //first without PreviousLicense then lookup for license in another foreach update
-                $company_temp = $this->company_temp->where('NameCompany', $row[0])->first();
-                $la_temp = $this->la_temp->where('NameLicenseArea', $row[1])->first();
-                $agency_temp = $this->agency_temp->where('NameAgency', $row[13])->first();
-                $status_temp = $this->status_temp->where('NameStatus', $row[8])->first();
+                $company_temp = $this->company_temp->where('NameCompany', $row["nedropolzovatel"])->first();
+                $la_temp = $this->la_temp->where('NameLicenseArea', $row["licenzionnyi_ucastok"])->first();
+                $agency_temp = $this->agency_temp->where('NameAgency', $row["organ_vydavsii_licenziiu"])->first();
+                $status_temp = $this->status_temp->where('NameStatus', $row["status_licenzii"])->first();
 
                 License::create([
                     'id_company' => $company_temp -> id_company,// if nullable ?? NULL
                     'id_license_area' => $la_temp -> id_license_area,
                     'id_agency' => $agency_temp -> id_agency,
                     'id_status' => $status_temp -> id_status,
-                    'TypeOfPrimaryMineral' => $row[7],
-                    'DateOfRegistration' => $row[10],
-                    'DateOfEnding' => $row[11],
-                    'DateOfСancellation' => $row[12],
-                    'Seria' =>$row[2],
-                    'Number' => $row[3],
-                    'Type' => $row[4],
-                    'SpecialPurpose' => $row[6]
+                    'TypeOfPrimaryMineral' => $row["vid_osnovnogo_poleznogo_iskopaemo"],
+                    'DateOfRegistration' => $row["data_registracii"], //something wrong with the output
+                    'DateOfEnding' => $row["data_okoncaniia"],
+                    'DateOfСancellation' => $row["data_annulirovaniia"],
+                    'Seria' =>$row["seriia"],
+                    'Number' => $row["nomer"],
+                    'Type' => $row["vid"],
+                    'SpecialPurpose' => $row["celevoe_naznacenie"]
                 ]);
             }
         foreach ($rows as $row) {//in progress
             //СЫК01069НП
-            $tmp_row=array($row[5]);//3+5+2
+            $tmp_row=array($row["predydushhaia_licenziia"]);//3+5+2
             //(С, Ы, К, 0, 1, 0, 6, 9, Н, П)
             $tmp_row1=array($tmp_row[0], $tmp_row[1], $tmp_row[2]);
             //(С, Ы, К)
@@ -84,9 +85,9 @@ class ThirdSheetImport implements ToCollection, WithHeadingRow
             //(Н, П)
             $tmp_row3=implode("", $tmp_row3);
             //НП
-            if ($row[2]=$tmp_row1 && $row[3]=$tmp_row2 && $row[4]=$tmp_row3){
+            if ($row["seriia"]=$tmp_row1 && $row["nomer"]=$tmp_row2 && $row["vid"]=$tmp_row3){
                 //update for specific row
-                License::updateOrCreate(['PreviousLicense'=>$row[5]]);
+                License::updateOrCreate(['PreviousLicense'=>$row["predydushhaia_licenziia"]]);
                 //=id_license
                 //$user = User::where('email', request('email'))->first();
                 // if ($user !== null) {
