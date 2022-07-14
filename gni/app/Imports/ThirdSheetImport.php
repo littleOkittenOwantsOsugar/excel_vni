@@ -36,15 +36,19 @@ class ThirdSheetImport implements ToCollection, WithHeadingRow
         foreach ($rows as $row) 
             {
                 //dd($row);
-                if ($row[13] != null){
+                if ($row["organ_vydavsii_licenziiu"] != null){
                     Agency::firstorcreate([//THIS SHOULD BE BEFORE LICENSE
                         'NameAgency' => $row["organ_vydavsii_licenziiu"]
                     ]);
                 }
 
-                LicenseArea::create([// license area or license?
+                LicenseArea::updateOrCreate([// license area or license?
                     'Geometry' => $row["geom_geometrymultipolygon"]
+                    //Page::where('id', $id)->update(array('image' => 'asdasd'));
+                    //LicenseArea::update(array('Geometry' => $row["geom_geometrymultipolygon"]));
                 ]);
+
+                //LicenseArea::updateorcreate(array('Geometry' => $row["geom_geometrymultipolygon"]));
             }
         foreach ($rows as $row) 
             {
@@ -95,6 +99,9 @@ class ThirdSheetImport implements ToCollection, WithHeadingRow
                 //     $user->update(['name' => request('name')]);
                 
                 // }
+            }
+            else{
+                //
             }
         }
     }

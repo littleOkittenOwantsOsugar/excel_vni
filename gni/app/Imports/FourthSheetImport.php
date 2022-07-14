@@ -38,26 +38,37 @@ class FourthSheetImport implements ToCollection, WithHeadingRow
         foreach ($rows as $row) 
             {
                 //dd($row);
-                $MDtemp=explode(" (", $row["mestorozdenie_deistvuiushhie_licenzii"] );
-
-                if (array_key_exists(1, $MDtemp)){//see secondimport
-                    array_pop($MDtemp);
-                    $MDtemp=implode(' (', $MDtemp);
-                };
-
                 StepenOsvoenia::firstorcreate([//unique
                     'NameStepen'=> $row["stepen_osvoeniia"]
                 ]);
+            }
+        foreach ($rows as $row) 
+            {
+                $MDtemp1="";
+                $MDtemp=explode(" (", $row["mestorozdenie_deistvuiushhie_licenzii"] );
+                array_pop($MDtemp);
+                if (array_key_exists(1, $MDtemp)){//see secondimport
+                    
+                    $MDtemp1=implode(" (", $MDtemp);
+                }
+                elseif (array_key_exists(0, $MDtemp) && !array_key_exists(1, $MDtemp)) {
+                    $MDtemp1=$MDtemp[0]; 
+                }
+                else{
+                    $MDtemp1=$row["mestorozdenie_deistvuiushhie_licenzii"];
+                }
 
                 $osvoenie_temp = $this->osvoenie_temp->where('NameStepen', $row["stepen_osvoeniia"])->first();
+
                 if($row["federalnyi_okrug"]!=null)
                 {
                     MineralDeposit::create([
                         'id_osvoenie' => $osvoenie_temp -> id_osvoenie,
-                        'DepostName' => $MDtemp,
+                        'DepostName' => $MDtemp1,
                         'Coordinates' => $row["geom_geometrymultipolygon"]
                     ]);
                 }
+            }
                 
                 MineralDepositTwo::create([//rollback done
                     'id_deposit',
@@ -67,6 +78,6 @@ class FourthSheetImport implements ToCollection, WithHeadingRow
                     'id_deposit',
                     'id_license_area'
                 ]);
-            }
+            
     }
 }

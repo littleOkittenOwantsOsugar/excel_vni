@@ -11,12 +11,13 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class SecondSheetImport implements ToCollection, WithHeadingRow
 {
-    public function collection(Collection $rows) //unproofed done
+    public function collection(Collection $rows) //done
     {    
         foreach ($rows as $row)
             {
 
                 $LAtemp=explode(" (", $row["licenzionnyi_ucastok_licenziia"] );
+                //dd($LAtemp);
                 $LAtemp1="";
 
                 //Восточно - Ачисинский (Улашкент) (МАХ00704НР)
@@ -33,9 +34,12 @@ class SecondSheetImport implements ToCollection, WithHeadingRow
                     
                     $LAtemp1 = implode(" (", $LAtemp);
                 }
+                elseif (array_key_exists(0, $LAtemp) && !array_key_exists(1, $LAtemp)) {//skip part where no license
+                    $LAtemp1=$LAtemp[0]; 
+                }
                 else {
                     //var_dump($LAtemp);
-                    $LAtemp1=$LAtemp[0];
+                    $LAtemp1=$row["licenzionnyi_ucastok_licenziia"];
                 }
                     //[Восточно - Ачисинский (Улашкент)]
                 

@@ -16,10 +16,10 @@ class MainImport implements WithMultipleSheets
     {
         return [
             //0 => new FirstSheetImport(),
-            //1 => new SecondSheetImport(),  //error with data Ольховский //Ольховский участок
-            //2 => new ThirdSheetImport(),
-            //3 => new FourthSheetImport(),
-            //4 => new FifthSheetImport(),
+            //1 => new SecondSheetImport(),  //working
+            //2 => new ThirdSheetImport(), //update license area doesnt working
+            //3 => new FourthSheetImport(), //MineralDepositTwo and MestLU isnt done yet, MineralDeposit and StepenOsvoenia is done
+            //4 => new FifthSheetImport(), //working
         ];
     }
 }
