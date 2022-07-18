@@ -22,27 +22,42 @@ class FirstSheetImport implements ToCollection, WithHeadingRow
 
     public function collection(Collection $rows) //in progress
     {
-        foreach ($rows as $row){
-            Company::create([
-                'NameCompany' => $row["nazvanie"],
-                'Address'  => $row["poctovyi_adres"],
-                'INN'  => $row["inn"], 
-                'CodeOKPO'  => $row["kod_okpo"], 
-                'CodeOKATO'  => $row["kod_okato"], 
-                'OGRN'  => $row["ogrn"], 
-                'Addition'  => $row["primecanie"],
-                'CurrentState'  => $row["tekushhee_sostoianie"] 
-            ]);
-        }
+        // foreach ($rows as $row){
+        //     Company::create([
+        //         'NameCompany' => $row["nazvanie"],
+        //         'Address'  => $row["poctovyi_adres"],
+        //         'INN'  => $row["inn"], 
+        //         'CodeOKPO'  => $row["kod_okpo"], 
+        //         'CodeOKATO'  => $row["kod_okato"], 
+        //         'OGRN'  => $row["ogrn"], 
+        //         'Addition'  => $row["primecanie"],
+        //         'CurrentState'  => $row["tekushhee_sostoianie"] 
+        //     ]);
+        // }
 
-        foreach ($rows as $row) // needs to be done
+        foreach ($rows as $row) // needs to be done | not working
             {
                 $company_temp = $this->company_temp->where('NameCompany', $row["upravliaiushhaia_kompaniia"])->first();
 
-                if ($row["upravliaiushhaia_kompaniia"]='Самостоятельные' || $row["upravliaiushhaia_kompaniia"]=null){
-                    Company::updateorcreate([
-                        'ManagementCompany' => $company_temp -> id_company, 
-                    ]);
+                //var_dump($row["upravliaiushhaia_kompaniia"]);
+
+                if ($row["upravliaiushhaia_kompaniia"]=="Самостоятельные" || $row["upravliaiushhaia_kompaniia"]==NULL){
+                    //
+                }
+                else{
+                    //var_dump($row["upravliaiushhaia_kompaniia"]);
+
+                    if ($row["upravliaiushhaia_kompaniia"]==$company_temp){//if company is found then load it to postgre
+                        var_dump($row["upravliaiushhaia_kompaniia"]);
+                        // Company::updateorcreate([
+                        //     'ManagementCompany' => $company_temp -> id_company, 
+                        // ]);
+                    }
+                    else{
+                        // Company::updateorcreate([
+                        //     'ManagementCompany' => null, 
+                        // ]);
+                    }
                 }
             }
     }

@@ -11,6 +11,7 @@ use App\Models\StatusOfLicense;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class ThirdSheetImport implements ToCollection, WithHeadingRow
 {
@@ -33,23 +34,25 @@ class ThirdSheetImport implements ToCollection, WithHeadingRow
 
     public function collection(Collection $rows)
     {
-        foreach ($rows as $row) 
-            {
+        //foreach ($rows as $row) 
+            //{
                 //dd($row);
-                if ($row["organ_vydavsii_licenziiu"] != null){
-                    Agency::firstorcreate([//THIS SHOULD BE BEFORE LICENSE
-                        'NameAgency' => $row["organ_vydavsii_licenziiu"]
-                    ]);
-                }
+                // if ($row["organ_vydavsii_licenziiu"] != null){
+                //     // Agency::firstorcreate([//THIS SHOULD BE BEFORE LICENSE
+                //     //     'NameAgency' => $row["organ_vydavsii_licenziiu"]
+                //     // ]);
+                // }
 
-                LicenseArea::updateOrCreate([// license area or license?
-                    'Geometry' => $row["geom_geometrymultipolygon"]
-                    //Page::where('id', $id)->update(array('image' => 'asdasd'));
-                    //LicenseArea::update(array('Geometry' => $row["geom_geometrymultipolygon"]));
-                ]);
+                //StatusOfLicense::firstorcreate(['NameStatus' => $row["status_licenzii"]]);//working!
+
+                // LicenseArea::updateOrCreate([// license area or license?
+                //     'Geometry' => $row["geom_geometrymultipolygon"]
+                //     //Page::where('id', $id)->update(array('image' => 'asdasd'));
+                //     //LicenseArea::update(array('Geometry' => $row["geom_geometrymultipolygon"]));
+                // ]);
 
                 //LicenseArea::updateorcreate(array('Geometry' => $row["geom_geometrymultipolygon"]));
-            }
+            //}
         foreach ($rows as $row) 
             {
                 //first without PreviousLicense then lookup for license in another foreach update
@@ -59,50 +62,50 @@ class ThirdSheetImport implements ToCollection, WithHeadingRow
                 $status_temp = $this->status_temp->where('NameStatus', $row["status_licenzii"])->first();
 
                 License::create([
-                    'id_company' => $company_temp -> id_company,// if nullable ?? NULL
+                    'id_company' => $company_temp -> id_company ?? NULL,// if nullable ?? NULL
                     'id_license_area' => $la_temp -> id_license_area,
-                    'id_agency' => $agency_temp -> id_agency,
+                    'id_agency' => $agency_temp -> id_agency ?? NULL,
                     'id_status' => $status_temp -> id_status,
                     'TypeOfPrimaryMineral' => $row["vid_osnovnogo_poleznogo_iskopaemo"],
-                    'DateOfRegistration' => $row["data_registracii"], //something wrong with the output
-                    'DateOfEnding' => $row["data_okoncaniia"],
-                    'DateOfСancellation' => $row["data_annulirovaniia"],
+                    'DateOfRegistration' => Date::ExcelToDateTimeObject($row["data_registracii"])->format('Y-m-d'),//something wrong with the data output
+                    'DateOfEnding' => Date::ExcelToDateTimeObject($row["data_okoncaniia"])->format('Y-m-d'),
+                    'DateOfСancellation' => Date::ExcelToDateTimeObject($row["data_annulirovaniia"])->format('Y-m-d'),
                     'Seria' =>$row["seriia"],
                     'Number' => $row["nomer"],
                     'Type' => $row["vid"],
                     'SpecialPurpose' => $row["celevoe_naznacenie"]
                 ]);
             }
-        foreach ($rows as $row) {//in progress
-            //СЫК01069НП
-            $tmp_row=array($row["predydushhaia_licenziia"]);//3+5+2
-            //(С, Ы, К, 0, 1, 0, 6, 9, Н, П)
-            $tmp_row1=array($tmp_row[0], $tmp_row[1], $tmp_row[2]);
-            //(С, Ы, К)
-            $tmp_row1=implode("", $tmp_row1);
-            //СЫК
-            $tmp_row2=array($tmp_row[3], $tmp_row[4], $tmp_row[5], $tmp_row[6], $tmp_row[7]);
-            //(0, 1, 0, 6, 9)
-            $tmp_row2=implode("", $tmp_row2);
-            //01069
-            $tmp_row3=array($tmp_row[8], $tmp_row[9]);
-            //(Н, П)
-            $tmp_row3=implode("", $tmp_row3);
-            //НП
-            if ($row["seriia"]=$tmp_row1 && $row["nomer"]=$tmp_row2 && $row["vid"]=$tmp_row3){
-                //update for specific row
-                License::updateOrCreate(['PreviousLicense'=>$row["predydushhaia_licenziia"]]);
-                //=id_license
-                //$user = User::where('email', request('email'))->first();
-                // if ($user !== null) {
+        // foreach ($rows as $row) {//in progress
+        //     //СЫК01069НП
+        //     $tmp_row=array($row["predydushhaia_licenziia"]);//3+5+2
+        //     //(С, Ы, К, 0, 1, 0, 6, 9, Н, П)
+        //     $tmp_row1=array($tmp_row[0], $tmp_row[1], $tmp_row[2]);
+        //     //(С, Ы, К)
+        //     $tmp_row1=implode("", $tmp_row1);
+        //     //СЫК
+        //     $tmp_row2=array($tmp_row[3], $tmp_row[4], $tmp_row[5], $tmp_row[6], $tmp_row[7]);
+        //     //(0, 1, 0, 6, 9)
+        //     $tmp_row2=implode("", $tmp_row2);
+        //     //01069
+        //     $tmp_row3=array($tmp_row[8], $tmp_row[9]);
+        //     //(Н, П)
+        //     $tmp_row3=implode("", $tmp_row3);
+        //     //НП
+        //     if ($row["seriia"]=$tmp_row1 && $row["nomer"]=$tmp_row2 && $row["vid"]=$tmp_row3){
+        //         //update for specific row
+        //             License::updateOrCreate(['PreviousLicense'=>$row["predydushhaia_licenziia"]]);
+        //         //=id_license
+        //         //$user = User::where('email', request('email'))->first();
+        //         // if ($user !== null) {
 
-                //     $user->update(['name' => request('name')]);
+        //         //     $user->update(['name' => request('name')]);
                 
-                // }
-            }
-            else{
-                //
-            }
-        }
+        //         // }
+        //     }
+        //     else{
+        //         //
+        //     }
+        // }
     }
 }

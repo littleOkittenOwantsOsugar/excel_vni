@@ -8,4 +8,4 @@ feature, bugfix add
 Столбцы не нуждающиеся в парсинге распределены в таблицы postgre
 Столбцы с простейшим парсингом распределены в таблицы postgre
 
-StatusOfLicense, LicenseArea, MineralDeposit, StepenOsvoenia, FederalDistrict, SubjectRussia успешная загрузка данных в postgres
+StatusOfLicense, LicenseArea, MineralDeposit, StepenOsvoenia, FederalDistrict, SubjectRussia, Agency успешная загрузка данных в postgres

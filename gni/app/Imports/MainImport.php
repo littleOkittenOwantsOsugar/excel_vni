@@ -15,11 +15,11 @@ class MainImport implements WithMultipleSheets
     public function sheets(): array
     {
         return [
-            //0 => new FirstSheetImport(),
-            //1 => new SecondSheetImport(),  //working
-            //2 => new ThirdSheetImport(), //update license area doesnt working
-            //3 => new FourthSheetImport(), //MineralDepositTwo and MestLU isnt done yet, MineralDeposit and StepenOsvoenia is done
-            //4 => new FifthSheetImport(), //working
+            //0 => new FirstSheetImport(), //last part not working
+            //1 => new SecondSheetImport(),  //working, MestLU is not done
+            2 => new ThirdSheetImport(), //update license area doesnt working, geometry not needed, Agency is downloaded
+            //3 => new FourthSheetImport(), //MineralDepositTwo, MestLU is not done
+            //4 => new FifthSheetImport(), //MineralDepositTwo is not done
         ];
     }
 }
